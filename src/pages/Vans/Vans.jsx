@@ -9,7 +9,6 @@ export default function Vans() {
   const [error, setError] = React.useState(null);
 
   const typeFilter = searchParams.get("type");
-  console.log(searchParams.toString());
 
   React.useEffect(() => {
     async function loadVans() {
@@ -19,16 +18,12 @@ export default function Vans() {
         setVans(data);
       } catch (err) {
         setError(err);
-        // console.log("There was an error!");
-        // console.log(err);
       } finally {
         setLoading(false);
       }
     }
+
     loadVans();
-    // fetch("/api/vans")
-    //   .then((res) => res.json())
-    //   .then((data) => setVans(data.vans));
   }, []);
 
   const displayedVans = typeFilter
@@ -39,7 +34,10 @@ export default function Vans() {
     <div key={van.id} className="van-tile">
       <Link
         to={van.id}
-        state={{ search: `?${searchParams.toString()}`, type: typeFilter }}
+        state={{
+          search: `?${searchParams.toString()}`,
+          type: typeFilter,
+        }}
       >
         <img src={van.imageUrl} />
         <div className="van-info">
@@ -65,26 +63,12 @@ export default function Vans() {
     });
   }
 
-  /**
-   * Challenges:
-   * 1. Conditionally render the "Clear filter" button only if
-   *    there's a `type` filter currently applied in the search params
-   *
-   * 2. On just the 3 filter buttons (not the Clear filter button),
-   *    conditionally render the className "selected" if the
-   *    typeFilter value equals the value that button sets it to.
-   *    (We don't have a variable for that, so it'll be a hard-coded
-   *    string).
-   *
-   *    Hint: `...${typeFilter === "simple" ? ...}`
-   */
-
   if (loading) {
-    return <h1 aria-live="polite">Loading...</h1>;
+    return <h1>Loading...</h1>;
   }
 
   if (error) {
-    return <h1 aria-live="assertive">There was an error:{error.message}</h1>;
+    return <h1>There was an error: {error.message}</h1>;
   }
 
   return (
@@ -93,25 +77,22 @@ export default function Vans() {
       <div className="van-list-filter-buttons">
         <button
           onClick={() => handleFilterChange("type", "simple")}
-          className={`van-type simple ${
-            typeFilter === "simple" ? "selected" : ""
-          }`}
+          className={`van-type simple 
+                        ${typeFilter === "simple" ? "selected" : ""}`}
         >
           Simple
         </button>
         <button
           onClick={() => handleFilterChange("type", "luxury")}
-          className={`van-type luxury ${
-            typeFilter === "luxury" ? "selected" : ""
-          }`}
+          className={`van-type luxury 
+                        ${typeFilter === "luxury" ? "selected" : ""}`}
         >
           Luxury
         </button>
         <button
           onClick={() => handleFilterChange("type", "rugged")}
-          className={`van-type rugged ${
-            typeFilter === "rugged" ? "selected" : ""
-          }`}
+          className={`van-type rugged 
+                        ${typeFilter === "rugged" ? "selected" : ""}`}
         >
           Rugged
         </button>

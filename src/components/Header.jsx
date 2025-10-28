@@ -8,6 +8,11 @@ export default function Header() {
     textDecoration: "underline",
     color: "#c71010ff",
   };
+
+  function fakeLogOut() {
+    localStorage.removeItem("loggedin");
+  }
+
   return (
     <header>
       <Link className="site-logo" to="/">
@@ -35,6 +40,7 @@ export default function Header() {
         <Link to="login" className="login-link">
           <img src={Avatar} className="login-icon" />
         </Link>
+        <button onClick={fakeLogOut}>X</button>
       </nav>
     </header>
   );
